@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sy1714201 徐志作业</title>
+</head>
+<body>
+<div class="article">
+    <h1 class="title">第一次作业</h1>
+
+    <!-- 文章内容 -->
+    <div data-note-content="" class="show-content">
+        <div class="show-content-free">
+            <h2>个人信息</h2>
+            <p>姓名：徐志<br>
+            <div class="author">
+                <img src="http://upload.jianshu.io/users/upload_avatars/574261/c2b266b439df.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96" alt="96">
+                </a>          <div class="info">
+                学号：SY1714201<br>
+                专业：可靠性与系统工程</p>
+            <hr>
+            <h2>任务列表</h2>
+            <ul>
+                <li>tomcat实现部署静态web项目过程</li>
+                <li>两台电脑建立连接的其他方式</li>
+            </ul>
+            <hr>
+            <h3>任务一：  tomcat实现部署静态web项目过程</h3>
+            <ol>
+                <li>使用sublime TEXT文本编辑软件生成a.html文件</li>
+                <li>下载tomcat服务器，并且在终端输入命令brew services start tomcat 将其打开</li>
+                <li>将生成的a.html文件打包为项目放在tomcat中名为webapps的文件目录下</li>
+                <li>配置/conf/server.xml文件<br>
+                    将如下代码添加在上述文件中，其中<em>host name</em> 设置为自己电脑ip，<em>docBase</em>设置为项目文件夹目录</li>
+            </ol>
+            <blockquote>
+                <p>&lt;Host name="10.138.52.38" debug="0" appBase="webapps" unpackWARs="true" autoDeploy="true" xmlValidation="false"  xmlNamespaceAware="false"&gt;<br>
+                    &lt;Context path="" docBase="/usr/local/Cellar/tomcat/9.0.5/libexec/webapps/a" debug="0" reloadable="true" crossContext="true"/&gt;<br>
+                    &lt;Logger className="org.apache.catalina.logger.FileLogger" directory="logs" prefix="tot_log." suffix=".txt" timestamp="true"/&gt;<br>
+                    &lt;/Host&gt;</p>
+            </blockquote>
+            <ol start="5">
+                <li>打开浏览器，输入localhost:8080/a/a.html即可显示a.html中的静态网页</li>
+            </ol>
+            <h3>任务二：两台电脑建立连接的其他方式</h3>
+            <ol>
+                <li>我对HTTP协议下两台电脑建立连接的理解
+                    <ul>
+                        <li>在任务一中我们使用HTTP协议将两台在同一路由下的计算机连接起来，是client-server模式，tomcat做服务器，浏览器中申请URL: <a href="https://link.jianshu.com?t=http%3A%2F%2Fip%3Aport%2F" target="_blank" rel="nofollow">http://ip:port/</a>，那么对应的服务器返回相应的请求文件,返回的文件中包含图片，服务器会自动从其他服务器获取资源，统一返回给浏览器。同时可以有&lt;form&gt;格式生成表格，通过POST方式获取用户信息</li>
+                    </ul>
+                </li>
+                <li>其他的两台电脑建立连接的方式</li>
+            </ol>
+            <ul>
+                <li>
+                    <a href="https://link.jianshu.com/?t=http://www.ietf.org/rfc/rfc4251.txt" target="_blank">SSH</a>是一种协议标准，其目的是实现<strong>安全远程登录</strong>以及其它<strong>安全网络服务</strong>。<br>
+                    四个角色的关系如下图所示：<br>
+                    <div class="image-package">
+                        <div class="image-container" style="max-width: 673px; max-height: 472px; background-color: transparent;">
+                            <div class="image-container-fill" style="padding-bottom: 70.13000000000001%;"></div>
+                            <div class="image-view" data-width="673" data-height="472"><img data-original-src="//upload-images.jianshu.io/upload_images/574261-bbc9d0c557e28f6f" data-original-width="673" data-original-height="472" data-original-format="image/png" data-original-filesize="27926" class="" style="cursor: zoom-in;" src="//upload-images.jianshu.io/upload_images/574261-bbc9d0c557e28f6f?imageMogr2/auto-orient/strip%7CimageView2/2/w/673"></div>
+                        </div>
+                        <div class="image-caption">关系图</div>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
