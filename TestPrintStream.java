@@ -1,8 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-
-
+//把if循环中的东西通过print重新定位，打印到了目标文件中
 public class TestPrintStream {
     public static void main(String[] args) {
         PrintStream ps = null;
