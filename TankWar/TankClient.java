@@ -1,4 +1,6 @@
 
+import javafx.scene.paint.Stop;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -7,21 +9,34 @@ import java.util.List;
 public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_WEIGHT = 600;
-    Tank myTank = new Tank(50,50,true,this);
-    Tank enemyTank = new Tank(100,100,false,this);
+    Tank myTank = new Tank(50, 50, true, Tank.Direction.STOP, this);
+    List<Tank> tanks = new ArrayList<>();
+    List<Explode> explodes = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
     private Image offScreenImage;
 
     public void paint(Graphics g) {
-        g.drawString("子弹数量: "+bullets.size(),380,50);
+        g.drawString("子弹数量: " + bullets.size(), 360, 50);
+        g.drawString("爆炸数量: " + explodes.size(), 200, 50);
+        g.drawString("敌军数量: " + tanks.size(), 100, 50);
+
+
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
-            b.hitTank(enemyTank);
+            b.hitTanks(tanks);
+            b.hitTank(myTank);
             b.draw(g);
+        }
+        for (int i = 0; i < explodes.size(); i++) {
+            Explode e = explodes.get(i);
+            e.draw(g);
+        }
+        for (int i = 0; i < tanks.size(); i++) {
+            Tank t = tanks.get(i);
+            t.draw(g);
         }
 
         myTank.draw(g);
-        enemyTank.draw(g);
     }
 
     //双缓冲解决闪烁现象，添加一个虚拟图片，先全部画出来再搬家到屏幕上
@@ -41,7 +56,11 @@ public class TankClient extends Frame {
 
 
     public void tankLaunch() {
-        setTitle("TankWar");
+        for (int i = 0; i < 10; i++) {
+            Tank t = new Tank(50 + 50 * (i + 1), 50, false, Tank.Direction.D, this);
+            tanks.add(t);
+        }
+        setTitle("徐志作品：TankWar");
         setResizable(false);
         setBackground(new Color(0x89C896));
         setBounds(400, 300, GAME_WIDTH, GAME_WEIGHT);
@@ -64,7 +83,7 @@ public class TankClient extends Frame {
     private class KeyMonitor extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-           myTank.keyPressed(e);
+            myTank.keyPressed(e);
         }
 
         @Override

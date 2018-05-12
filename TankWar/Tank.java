@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class Tank {
     private static final int X_SPEED = 5;
@@ -8,13 +9,19 @@ public class Tank {
     private static final double YY_SPEED = 3.53;
     private static final int WIDTH = 30;
     private static final int HEIGHT = 30;
-
+    private static Random random = new Random();
 
     TankClient tc;
     private int x;
     private int y;
     private boolean UP = false, RIGHT = false, LEFT = false, DOWN = false;
+
+    public boolean isGood() {
+        return good;
+    }
+
     private boolean good;
+    private int step = random.nextInt(15) + 3;
 
     public void setLive(boolean live) {
         this.live = live;
@@ -40,8 +47,9 @@ public class Tank {
         this.good = good;
     }
 
-    Tank(int x, int y, Boolean good, TankClient tc) {
+    Tank(int x, int y, Boolean good, Direction d, TankClient tc) {
         this(x, y, good);
+        this.direction = d;
         this.tc = tc;
     }
 
@@ -53,7 +61,7 @@ public class Tank {
         if (this.good) g.setColor(new Color(0xBB4B0B));
         else g.setColor(new Color(0x04B2BB));
         g.fillOval(x, y, WIDTH, HEIGHT);
-        g.setColor(new Color(0x6801BB));
+        g.setColor(new Color(0x5105BB));
         switch (barrelDirection) {
             case D:
                 g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x + Tank.WIDTH / 2, y + HEIGHT + 6);
@@ -127,6 +135,16 @@ public class Tank {
         if (x + Tank.WIDTH > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.WIDTH;
         if (y < 25) y = 25;
         if (y + Tank.HEIGHT > TankClient.GAME_WEIGHT) y = TankClient.GAME_WEIGHT - Tank.HEIGHT;
+        if (!good) {
+            Direction[] directions = Direction.values();
+            if (step == 0) {
+                int rn = random.nextInt(directions.length);
+                direction = directions[rn];
+                step = random.nextInt(15) + 3;
+                Fire();
+            }
+            step--;
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -184,13 +202,15 @@ public class Tank {
     }
 
     public Bullet Fire() {
+        if (!live) return null;
         int x = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int y = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-
-        Bullet b = new Bullet(x, y, barrelDirection, tc); //子弹的初始化
+        Bullet b = new Bullet(x, y, true, barrelDirection, tc); //子弹的初始化
+        if (!this.good) b.setGood(false);
         tc.bullets.add(b);
         return b;
     }
+
     public Rectangle getRect() {
         return new Rectangle(x, y, WIDTH, HEIGHT);
     }

@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bullet {
     public static final int X_SPEED = 10;
@@ -8,6 +10,16 @@ public class Bullet {
     public static final int WIDTH = 8;
     public static final int HEIGHT = 8;
     private TankClient tc;
+
+    public boolean isGood() {
+        return good;
+    }
+
+    public void setGood(boolean good) {
+        this.good = good;
+    }
+
+    private boolean good;
 
     public boolean isLive() {
         return live;
@@ -24,8 +36,9 @@ public class Bullet {
         this.direction = direction;
     }
 
-    public Bullet(int x, int y, Tank.Direction direction, TankClient tc) {
+    public Bullet(int x, int y, boolean good, Tank.Direction direction, TankClient tc) {
         this(x, y, direction);
+        this.good = good;
         this.tc = tc;
     }
 
@@ -35,7 +48,11 @@ public class Bullet {
             return;
         }
         Color c = g.getColor(); //保护画笔原色
-        g.setColor(Color.BLACK);
+        if (this.isGood()) {
+            g.setColor(new Color(0xBB050C));
+        } else {
+            g.setColor(Color.BLACK);
+        }
         g.fillOval(x, y, WIDTH, HEIGHT);
         g.setColor(c);
         move();//改变的是x和y
@@ -79,10 +96,23 @@ public class Bullet {
     }
 
     public Boolean hitTank(Tank t) {
-        if (getRect().intersects(t.getRect()) && t.isLive()) {
+        if (this.isLive() && getRect().intersects(t.getRect()) && t.isLive() && this.isGood() != t.isGood()) {
+            Explode e = new Explode(x, y, tc);
             t.setLive(false);
             this.live = false;
+            tc.explodes.add(e);
             return true;
+        }
+        return false;
+    }
+
+    public Boolean hitTanks(List<Tank> tanks) {
+        for (int i = 0; i < tanks.size(); i++) {
+            Tank t = tanks.get(i);
+            if (hitTank(t)) {
+                tanks.remove(t);
+                return true;
+            }
         }
         return false;
     }
