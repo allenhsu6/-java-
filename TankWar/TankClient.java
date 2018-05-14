@@ -1,6 +1,4 @@
 
-import javafx.scene.paint.Stop;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -9,7 +7,9 @@ import java.util.List;
 public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_WEIGHT = 600;
-    Tank myTank = new Tank(50, 50, true, Tank.Direction.STOP, this);
+    Tank myTank = new Tank(700, 500, true, Tank.Direction.STOP, this);
+    Wall wall = new Wall(this);
+    Wall wall1 = new Wall(this);
     List<Tank> tanks = new ArrayList<>();
     List<Explode> explodes = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
@@ -19,12 +19,20 @@ public class TankClient extends Frame {
         g.drawString("子弹数量: " + bullets.size(), 360, 50);
         g.drawString("爆炸数量: " + explodes.size(), 200, 50);
         g.drawString("敌军数量: " + tanks.size(), 100, 50);
-
+        // 确保敌军坦克一直存在
+        if (tanks.size()< 3){
+            for (int i = 0; i < 5; i++) {
+                Tank t = new Tank(50 + 50 * (i + 1), 50, false, Tank.Direction.D, this);
+                tanks.add(t);
+            }
+        }
 
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
             b.hitTanks(tanks);
             b.hitTank(myTank);
+            b.hitWall(this.wall);
+            b.hitWall(this.wall1);
             b.draw(g);
         }
         for (int i = 0; i < explodes.size(); i++) {
@@ -33,10 +41,18 @@ public class TankClient extends Frame {
         }
         for (int i = 0; i < tanks.size(); i++) {
             Tank t = tanks.get(i);
+            t.tankHitWall(this.wall);
+            t.tankHitWall(this.wall1);
+            t.tankHitTanks(tanks);
             t.draw(g);
         }
 
         myTank.draw(g);
+        myTank.tankHitTanks(tanks);
+        myTank.tankHitWall(wall1);
+        wall.draw(g);
+        wall1.draw(g);
+
     }
 
     //双缓冲解决闪烁现象，添加一个虚拟图片，先全部画出来再搬家到屏幕上

@@ -2,9 +2,20 @@ import java.awt.*;
 
 public class Explode {
     private TankClient tc;
-    int x,y;
+    int x, y;
     private boolean live = true;
-    int[] diameter = {2,6,12,23,45,36,23,11,4};
+    private static Toolkit tk = Toolkit.getDefaultToolkit();
+    private static Image[] images = {
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/111.gif"),
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/222.gif"),
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/333.gif"),
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/444.gif"),
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/555.gif"),
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/666.gif"),
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/777.gif"),
+            tk.getImage("/Users/allenhsu/Documents/IDEA/JAVA/src/image/888.gif"),
+
+    };
     int step = 0;
 
     public Explode(int x, int y, TankClient tc) {
@@ -12,19 +23,17 @@ public class Explode {
         this.y = y;
         this.tc = tc;
     }
-    public void draw(Graphics g){
 
-        if (step == diameter.length){
+    public void draw(Graphics g) {
+
+        if (step == images.length) {
             live = false;
             step = 0;
             tc.explodes.remove(this);
             return;
         }
-        Color c  = g.getColor();
-        g.setColor(new Color(0xBB050C));
-        g.fillOval(x,y,diameter[step],diameter[step]);
+        g.drawImage(images[step], x, y, null);
         step++;
-        g.setColor(c);
     }
 }
 

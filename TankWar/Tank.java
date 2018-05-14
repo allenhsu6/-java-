@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.Random;
 
 public class Tank {
@@ -14,6 +15,18 @@ public class Tank {
     TankClient tc;
     private int x;
     private int y;
+    private int oldx;
+    private int oldy;
+
+    public int getLiveBlood() {
+        return liveBlood;
+    }
+
+    public void setLiveBlood(int liveBlood) {
+        this.liveBlood = liveBlood;
+    }
+
+    private int liveBlood = 30;
     private boolean UP = false, RIGHT = false, LEFT = false, DOWN = false;
 
     public boolean isGood() {
@@ -58,8 +71,10 @@ public class Tank {
             return;
         }
         Color c = g.getColor(); //保护画笔原色
-        if (this.good) g.setColor(new Color(0xBB4B0B));
-        else g.setColor(new Color(0x04B2BB));
+        if (this.good) {
+            g.setColor(new Color(0xBB4B0B));
+            g.fillRect(x, y - 10, liveBlood, 10);
+        } else g.setColor(new Color(0x04B2BB));
         g.fillOval(x, y, WIDTH, HEIGHT);
         g.setColor(new Color(0x5105BB));
         switch (barrelDirection) {
@@ -96,7 +111,14 @@ public class Tank {
         move();
     }
 
+    void stay() {
+        x = oldx;
+        y = oldy;
+    }
+
     void move() {
+        oldx = x;
+        oldy = y;
         switch (direction) {
             case D:
                 y += Y_SPEED;
@@ -141,8 +163,8 @@ public class Tank {
                 int rn = random.nextInt(directions.length);
                 direction = directions[rn];
                 step = random.nextInt(15) + 3;
-                Fire();
             }
+            if (random.nextInt(10) > 7) Fire();
             step--;
         }
     }
@@ -169,8 +191,16 @@ public class Tank {
     public void keyReleased(KeyEvent e) {
         int Key = e.getKeyCode();
         switch (Key) {
+            case KeyEvent.VK_F2:
+                if (this.isGood()) {
+                    this.setLive(true);
+                    this.setLiveBlood(30);
+                }
             case KeyEvent.VK_F:
                 Fire();
+                break;
+            case KeyEvent.VK_A:
+                superFire();
                 break;
             case KeyEvent.VK_UP:
                 UP = false;
@@ -211,7 +241,46 @@ public class Tank {
         return b;
     }
 
+    public Bullet Fire(Direction dir) {
+        if (!live) return null;
+        int x = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
+        int y = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
+        Bullet b = new Bullet(x, y, true, dir, tc); //子弹的初始化
+        if (!this.good) b.setGood(false);
+        tc.bullets.add(b);
+        return b;
+    }
+
+    public void superFire() {
+        Direction[] directions = Direction.values();
+        for (int i = 0; i < 8; i++) {
+            Fire(directions[i]);
+        }
+    }
+
     public Rectangle getRect() {
         return new Rectangle(x, y, WIDTH, HEIGHT);
+    }
+
+    public Boolean tankHitWall(Wall wall) {
+            if (this.isLive() && getRect().intersects(wall.getRect())) {
+                stay();
+                return true;
+            }
+        return false;
+    }
+
+    /*
+    判断坦克不能相撞，主要是敌军的坦克
+     */
+    public Boolean tankHitTanks(List<Tank> tanks) {
+        for (int i = 0; i < tanks.size(); i++) {
+            Tank tank = tanks.get(i);
+            if (this != tank && tank.isLive() && this.isLive() && getRect().intersects(tank.getRect())) {
+                stay();
+                return true;
+            }
+        }
+        return false;
     }
 }

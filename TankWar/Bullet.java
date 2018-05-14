@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bullet {
@@ -44,7 +43,7 @@ public class Bullet {
 
     public void draw(Graphics g) {
         if (!isLive()) {
-            tc.bullets.remove(this);
+            tc.bullets.remove(this); //如果子弹死了，我们就从子弹包里移出去
             return;
         }
         Color c = g.getColor(); //保护画笔原色
@@ -97,11 +96,23 @@ public class Bullet {
 
     public Boolean hitTank(Tank t) {
         if (this.isLive() && getRect().intersects(t.getRect()) && t.isLive() && this.isGood() != t.isGood()) {
-            Explode e = new Explode(x, y, tc);
-            t.setLive(false);
-            this.live = false;
-            tc.explodes.add(e);
-            return true;
+            if (t.isGood()) {
+                if (t.getLiveBlood() != 0 && !this.isGood()) {
+                    int blood = t.getLiveBlood();
+                    t.setLiveBlood(blood - 10);
+                    this.live = false;
+                    return true;
+                }
+                Explode e = new Explode(x, y, tc);
+                tc.explodes.add(e);
+                t.setLive(false);
+            } else {
+                Explode e = new Explode(x, y, tc);
+                t.setLive(false);
+                this.live = false;
+                tc.explodes.add(e);
+                return true;
+            }
         }
         return false;
     }
@@ -119,5 +130,13 @@ public class Bullet {
 
     public Rectangle getRect() {
         return new Rectangle(x, y, WIDTH, HEIGHT);
+    }
+
+    public Boolean hitWall(Wall wall) {
+            if (this.isLive() && getRect().intersects(wall.getRect())) {
+                this.live = false;
+                return true;
+            }
+        return false;
     }
 }
