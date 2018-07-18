@@ -1,5 +1,6 @@
 package GaoQi;
 
+<<<<<<< HEAD
 import java.util.Scanner;
 
 public class Homework6_3 {
@@ -37,3 +38,10 @@ public class Homework6_3 {
         return total / N;
     }
 }
+=======
+public class Homework6_3 {
+    public static void main(String[] args) {
+
+    }
+}
+>>>>>>> origin/master
