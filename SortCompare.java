@@ -1,11 +1,10 @@
-import edu.princeton.cs.algs4.Interval2D;
 
 public class SortCompare {
     public static double time(String alg, Comparable[] a) {
         Stopwatch timer = new Stopwatch();
         if (alg.equals("Insertion")) Insertion.sort(a);
         if (alg.equals("Shell")) Shell.sort(a);
-        if (alg.equals("Selection")) Selection.sort(a);
+        if (alg.equals("Selection")) Selection.selectSort(a);
         if(alg.equals("Merge")) Merge.sort(a);
         if (alg.equals("MergeBU")) MergeBU.sort(a);
         return timer.elapsedTime();

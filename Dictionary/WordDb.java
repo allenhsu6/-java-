@@ -1,3 +1,5 @@
+
+
 public class WordDb {
     Word[] myWord;
     int top;
@@ -12,7 +14,7 @@ public class WordDb {
 
 
     public void addWord(String english, String chinese) {
-
+        //if循环中实现数据存储的动态扩充
         if (top == size - 1) {
             Word[] temp1 = new Word[size + increment];
             size = size + increment;
@@ -22,7 +24,7 @@ public class WordDb {
             myWord = temp1;
         }
         top++;
-        myWord[top] = new Word(english,chinese); //new和构造函数是好搭档
+        myWord[top] = new Word(english, chinese); //new和构造函数是好搭档
     }
 
 
@@ -32,5 +34,14 @@ public class WordDb {
                 return myWord[i].getChinese();
         }
         return null;
+    }
+
+    /*
+      这里记得修改toString方法
+     */
+    @Override
+    public String toString() {
+        System.out.println();
+        return "11";
     }
 }

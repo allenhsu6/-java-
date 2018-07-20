@@ -1,6 +1,5 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Random;
 
 public class Quick {
     public static void sort(Comparable[] a){
@@ -26,7 +25,9 @@ public class Quick {
         Comparable v = a[lo];
         while (true)
         {
-            while (less(a[++i],v)) if (i==hi) break;
+            while (less(a[++i], v)) {
+                if (i == hi) break;
+            }
             while (less(v,a[--j])) if (j==lo) break;
             if (i>=j) break;
             exch(a,i,j);
@@ -70,4 +71,3 @@ public class Quick {
         show(a);
     }
 }
-

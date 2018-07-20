@@ -49,17 +49,17 @@ public class Shell {
         return true;
     }
 
-//    public static void main(String[] args) {
-//        try {
-//            //args[0]就是program arguments填的内容
-//            FileInputStream input = new FileInputStream(args[0]);
-//            System.setIn(input);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        String[] a = In.readStrings();
-//        sort(a);
-//        assert issorted(a);
-//        show(a);
-//    }
+    public static void main(String[] args) {
+        try {
+            //args[0]就是program arguments填的内容
+            FileInputStream input = new FileInputStream(args[0]);
+            System.setIn(input);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        String[] a = In.readStrings();
+        sort(a);
+        assert issorted(a);
+        show(a);
+    }
 }

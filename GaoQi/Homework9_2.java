@@ -23,7 +23,9 @@ public class Homework9_2 {
             System.out.println(book);
         }
 
-
+/**
+ * 保证treeSet的正确性，需要实现comparable接口，
+ */
         Set<Book> bookSet1 = new TreeSet<>();
         bookSet1.add(new Book(1, "<沉默的大多数>", 45.5, "清华出版社"));
         bookSet1.add(new Book(1, "<沉默的大多数>", 45.5, "清华出版社"));

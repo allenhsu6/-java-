@@ -1,6 +1,8 @@
-
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ public class TankClient extends Frame {
     Tank myTank = new Tank(700, 500, true, Tank.Direction.STOP, this);
     Wall wall = new Wall(this);
     Wall wall1 = new Wall(this);
+    Blood blood = new Blood(this);
     List<Tank> tanks = new ArrayList<>();
     List<Explode> explodes = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
@@ -52,6 +55,9 @@ public class TankClient extends Frame {
         myTank.tankHitWall(wall1);
         wall.draw(g);
         wall1.draw(g);
+
+        blood.draw(g);
+        blood.eatBlood(myTank);
 
     }
 

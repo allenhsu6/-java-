@@ -1,4 +1,5 @@
 package thread;
+
 //死锁
 public class TestDeadLock implements Runnable {
     public int flag = 1;

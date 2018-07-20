@@ -1,3 +1,4 @@
+
 public class Word {
     String chinese;
     String english;
@@ -13,5 +14,10 @@ public class Word {
 
     public String getEnglish() {
         return english;
+    }
+
+    @Override
+    public String toString() {
+        return english + "/" + chinese;
     }
 }
